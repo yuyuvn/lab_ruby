@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>LabRuby</title>
+  <title><%= full_title(yield(:title)) %></title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+	<header class="navbar navbar-fixed-top navbar-inverse">
+		<div class="container">
+			<%= link_to "sample app", '#', id: "logo" %>
+			<nav>
+			  <ul class="nav navbar-nav pull-right">
+				<li><%= link_to "Home",   '/' %></li>
+				<li><%= link_to "Help",   'static_pages/help' %></li>
+				<li><%= link_to "About",   'static_pages/about' %></li>
+				<li><%= link_to "Contact",   'static_pages/contact' %></li>
+			  </ul>
+			</nav>
+		</div>
+	</header>
+	<div class="container">
+		<%= yield %>
+	</div>
+	<footer>
+		<div class="container">
+			<h4>Ruby on rails lab - hedspi - 2014</h4>
+		</div>
+	</footer>
 </body>
 </html>
