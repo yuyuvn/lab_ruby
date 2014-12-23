@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
 	end
 	
 	def send_activation_email
-		UserMailer.account_activation(self).deliver_now
+		UserMailer.account_activation(self).deliver!
 	end
 	
 	def create_reset_digest
@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
 	end
 	
 	def send_password_reset_email
-		UserMailer.password_reset(self).deliver_now
+		UserMailer.password_reset(self).deliver!
 	end
 	
 	def password_reset_expired?
