@@ -5,6 +5,12 @@ class StaticPagesControllerTest < ActionController::TestCase
     get :home
     assert_response :success
   end
+  
+  test "should get user home" do
+    log_in_as(:michael)
+    get :userhome
+    assert_response :success
+  end
 
   test "should get help" do
     get :help
