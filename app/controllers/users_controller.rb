@@ -4,21 +4,21 @@ class UsersController < ApplicationController
 	before_action :admin_user,     only: :destroy
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy,
                                         :following, :followers]
-	
+
 	def index
 		    @users = User.paginate(page: params[:page], per_page: 8)
 	end
-	
+
 	def show
 		@user = User.find(params[:id])
 		@microposts = @user.microposts.paginate(page: params[:page])
 	end
-	
+
 	def new
 		redirect_to root_url if logged_in?
 		@user = User.new
 	end
-	
+
 	def create
 		redirect_to root_url if logged_in?
 		@user = User.new(user_params)
@@ -30,11 +30,11 @@ class UsersController < ApplicationController
 			render 'new'
 		end
 	end
-	
+
 	def edit
 		@user = User.find(params[:id])
 	end
-	
+
 	def update
 		@user = User.find(params[:id])
 		if @user.update_attributes(user_params)
@@ -44,13 +44,13 @@ class UsersController < ApplicationController
 			render 'edit'
 		end
 	end
-	
+
 	def destroy
 		User.find(params[:id]).destroy
 		flash[:success] = "User deleted"
 		redirect_to users_url
 	end
-  
+
   def following
     @title = "Following"
     @user  = User.find(params[:id])
@@ -64,13 +64,25 @@ class UsersController < ApplicationController
     @users = @user.followers.paginate(page: params[:page])
     render 'show_follow'
   end
+
+  def follow
+    user  = User.find(params[:id])
+    current_user.follow user
+    redirect_to user
+  end
+
+  def unfollow
+    user  = User.find(params[:id])
+    current_user.unfollow user
+    redirect_to user
+  end
 	private
-	
+
 	def user_params
 		params.require(:user).permit(:name, :email, :password,
                                    :password_confirmation)
     end
-	
+
 	def logged_in_user
 		unless logged_in?
 			store_location
@@ -78,12 +90,12 @@ class UsersController < ApplicationController
 			redirect_to login_url
 		end
 	end
-	
+
 	def correct_user
 		@user = User.find(params[:id])
 		redirect_to(root_url) unless current_user?(@user)
     end
-	
+
 	def admin_user
 		redirect_to(root_url) unless current_user.admin?
     end
